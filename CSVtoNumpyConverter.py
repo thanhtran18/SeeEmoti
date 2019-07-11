@@ -15,10 +15,12 @@ def convert_data_to_image(data):
 
     # flip the image
     image = np.array(image)[:, :, ::-1].copy()
-    # image = format_image(image)
+    image = format_image(image)
     return image
 
 
+# crop the image to match the network specs.
+# separate the faces in the image and get the one with the largest area
 def format_image(given_image):
     given_image = cv2.cvtColor(given_image, cv2.COLOR_BGR2GRAY)
 
@@ -44,7 +46,7 @@ def format_image(given_image):
         face = max_face
         given_image = given_image[face[1]:(face[1] + face[2]), face[0]:(face[0] + face[3])]
 
-        # resize the image  to fit network specs
+        # resize the image to fit network specs
         try:
             given_image = cv2.resize(given_image, (Constants.FACE_SIZE, Constants.FACE_SIZE),
                                      interpolation=cv2.INTER_CUBIC) / 255.0
@@ -54,3 +56,33 @@ def format_image(given_image):
         return given_image
     else:  # no face was detected
         return None
+
+
+# in the emotion array, everything is set to 0 except for some specific emotion index is set to 1
+def encode_emotion_array(index):
+    array = np.zeros(len(Constants.EMOTIONS))
+    array[index] = 1.0
+    return array
+
+
+# main
+data = pd.read_csv(join(Constants.DATA_DIR, Constants.DATASET_CSV_FILENAME))
+images = []
+labels = []
+total = data.shape[0]
+
+print("Started converting...\n")
+for i, row in data.iterrows():
+    emotion = encode_emotion_array(row['emotion'])
+    currImage = convert_data_to_image(row['pixels'])
+
+    if currImage is not None:
+        labels.append(emotion)
+        images.append(currImage)
+
+    print("Conversion progress: {}/{}".format(i + 1, total))
+
+print("Total number of images: " + str(len(images)))
+
+np.save(join(Constants.DATA_DIR, Constants.DATA_IMAGE_FILE), images)
+np.save(join(Constants.DATA_DIR, Constants.DATA_LABEL_FILE), labels)
