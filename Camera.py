@@ -4,6 +4,7 @@ from CNN import NeuralNetworkModel
 
 face_cascade = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_default.xml')
 
+
 # modify the image to network requirements and return it
 def format_image(given_image):
     if len(given_image.shape) > 2 and given_image.shape[2] == 3:
@@ -34,6 +35,7 @@ def format_image(given_image):
         return given_image
     else:
         return None
+
 
 video_capture = cv2.VideoCapture(0)
 neural_network_model = NeuralNetworkModel()
