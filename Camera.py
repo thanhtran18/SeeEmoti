@@ -40,9 +40,10 @@ def format_image(given_image):
 video_capture = cv2.VideoCapture(0)
 neural_network_model = NeuralNetworkModel()
 neural_network_model.create_model()
-neural_network_model.load_weights('model_weights')
+neural_network_model.model.load_weights('model_weights')
 
 # from OpenCVs documentation
+print("Capturing frame by frame...")
 while True:
     # Capture frame-by-frame
     ret, frame = video_capture.read()
@@ -67,13 +68,13 @@ while True:
         for index, emotion in enumerate(Constants.EMOTIONS):
             cv2.putText(frame, emotion, (15, index * 20 + 20),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
-            cv2.rectangle(frame, (130, index * 20 + 10), (130 +
-                                                          int(result[0][index] * 100), (index + 1) * 20 + 4),
+            cv2.rectangle(frame, (130, index * 20 + 10), (130 + int(result[0][index] * 100), (index + 1) * 20 + 4),
                           (255, 0, 0), -1)
 
     cv2.imshow('Video', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        print("Finished capturing")
         break
 
 # Release the capture
