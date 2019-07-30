@@ -41,6 +41,8 @@ video_capture = cv2.VideoCapture(0)
 neural_network_model = NeuralNetworkModel()
 neural_network_model.create_model()
 neural_network_model.model.load_weights('model_weights')
+# neural_network_model.train_model()
+
 
 # from OpenCVs documentation
 print("Capturing frame by frame...")

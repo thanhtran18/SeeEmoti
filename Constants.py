@@ -1,4 +1,4 @@
-EMOTIONS = ["neutral", "surprised", "happy", "sad", "disgusted", "fearful", "angry"]
+EMOTIONS = ['angry', 'disgusted', 'fearful', 'happy', 'sad', 'surprised', 'neutral']
 FACE_SIZE = 48
 CASCADE_FILE = 'haarcascade_frontalface_default.xml'
 DATA_IMAGE_FILE = 'converted_images.npy'
