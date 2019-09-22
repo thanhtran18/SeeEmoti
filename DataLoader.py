@@ -3,6 +3,7 @@ import numpy as np
 import Constants as Constants
 from sklearn.model_selection import train_test_split
 
+
 class DataLoader:
     def load_data(self):
         images = np.load(join(Constants.DATA_DIR, Constants.DATA_IMAGE_FILE))
